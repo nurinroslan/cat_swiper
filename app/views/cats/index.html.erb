@@ -1,0 +1,405 @@
+<body>
+
+  <main class="container d-flex flex-column align-items-center mb-1">
+    <div class="container pt-0 mt-0 text-center">
+      <h1 class="mb-2 display-4 fw-bold">🐱 <span class="text-info">CatSwipe</span></h1>
+      <p class="text-white-50 mb-4">Discover your favourite cat</p>
+    </div>
+    <!-- Swipe Interface -->
+    <div id="swipe-section" class="w-100" style="max-width: 360px;">
+      <div class="card-container mb-4" id="card-container">
+        <div class="bg-secondary rounded-3 w-100 h-100"></div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="d-flex justify-content-center gap-4 mb-4">
+        <button id="dislike-btn" class="btn btn-danger rounded-circle p-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <button id="like-btn" class="btn btn-success rounded-circle p-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="glass p-3 text-center mb-4">
+        <div class="d-flex justify-content-around">
+          <div>
+            <div class="text-success mb-1">💚</div>
+            <div id="like-count" class="fw-bold fs-4">0</div>
+            <div class="text-white-50 small">Liked</div>
+          </div>
+          <div>
+            <div class="text-danger mb-1">💔</div>
+            <div id="dislike-count" class="fw-bold fs-4">0</div>
+            <div class="text-white-50 small">Passed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="text-white/60 text-sm">Swipe right to like • Swipe left to pass • Find your purr-fect match</p>
+
+    <!-- Results Section -->
+        <section id="results-section" class="w-full max-w-4xl hidden">
+            <div class="glassmorphism rounded-3xl p-8 text-center text-white">
+                <div class="mb-8">
+                    <div class="text-6xl mb-4">🎉</div>
+                    <h2 class="text-3xl font-bold mb-2">Mission Complete!</h2>
+                    <p class="text-lg text-white/80">You've discovered some amazing cats</p>
+                </div>
+
+                <!-- Liked Cats Gallery -->
+                <div id="liked-gallery" class="mb-8">
+                    <h3 class="text-2xl font-semibold mb-6 text-left">Your Favorite Cats ❤️</h3>
+                    <div id="gallery-grid" class="gallery-grid">
+                        <!-- Liked cats will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button id="start-over-btn" class="action-btn px-8 py-3 bg-white/20 text-white rounded-full font-semibold">
+                        🔄 Discover More Cats
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+  <script>
+      class CatSwipeApp {
+          constructor() {
+              // Configuration
+              this.config = {
+                  cardsPerSession: 12,
+                  cardStackSize: 3,
+                  swipeThreshold: 100,
+                  animationDuration: 400
+              };
+
+              // Cat image pool with high-quality Unsplash images
+              this.catImagePool = [
+                  'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400&h=500&fit=crop&q=80',
+                  'https://images.unsplash.com/photo-1513245543132-31f507417b26?w=400&h=500&fit=crop&q=80',
+                  'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400&h=500&fit=crop&q=80',
+                  'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=400&h=500&fit=crop&q=80',
+                  'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=400&h=500&fit=crop&q=80',
+                  'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=400&h=500&fit=crop&q=80',
+                  'https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?w=400&h=500&fit=crop&q=80',
+                  'https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?w=400&h=500&fit=crop&q=80',
+                  'https://images.unsplash.com/photo-1571566882372-1598d88abd90?w=400&h=500&fit=crop&q=80',
+                  'https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=400&h=500&fit=crop&q=80',
+                  'https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=400&h=500&fit=crop&q=80',
+                  'https://images.unsplash.com/photo-1561948955-570b270e7c36?w=400&h=500&fit=crop&q=80',
+                  'https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=400&h=500&fit=crop&q=80',
+                  'https://images.unsplash.com/photo-1548247416-ec66f4900b2e?w=400&h=500&fit=crop&q=80',
+                  'https://images.unsplash.com/photo-1557246565-8a3d3ab5d7f6?w=400&h=500&fit=crop&q=80',
+                  'https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=400&h=500&fit=crop&q=80',
+              ];
+
+              // Application state
+              this.state = {
+                  currentCats: [],
+                  currentIndex: 0,
+                  likedCats: [],
+                  dislikedCats: [],
+                  isAnimating: false
+              };
+
+              // DOM elements
+              this.elements = {
+                  container: document.getElementById('card-container'),
+                  likeBtn: document.getElementById('like-btn'),
+                  dislikeBtn: document.getElementById('dislike-btn'),
+                  likeCount: document.getElementById('like-count'),
+                  dislikeCount: document.getElementById('dislike-count'),
+                  swipeSection: document.getElementById('swipe-section'),
+                  resultsSection: document.getElementById('results-section'),
+                  galleryGrid: document.getElementById('gallery-grid'),
+                  startOverBtn: document.getElementById('start-over-btn'),
+                  viewFavoritesBtn: document.getElementById('view-favorites-btn')
+              };
+
+              this.initialize();
+          }
+
+          // Initialize the application
+          initialize() {
+              this.shuffleCats();
+              this.loadCards();
+              this.bindEvents();
+              this.updateUI();
+          }
+
+          // Shuffle and select random cats for current session
+          shuffleCats() {
+              const shuffled = [...this.catImagePool].sort(() => Math.random() - 0.5);
+              this.state.currentCats = shuffled.slice(0, this.config.cardsPerSession);
+              this.state.currentIndex = 0;
+          }
+
+          // Load cards into the container
+          loadCards() {
+              this.elements.container.innerHTML = '';
+              
+              const cardsToLoad = Math.min(
+                  this.config.cardStackSize, 
+                  this.state.currentCats.length - this.state.currentIndex
+              );
+
+              for (let i = 0; i < cardsToLoad; i++) {
+                  const catIndex = this.state.currentIndex + i;
+                  if (catIndex < this.state.currentCats.length) {
+                      this.createCard(this.state.currentCats[catIndex], i);
+                  }
+              }
+          }
+
+          // Create a single card element
+          createCard(catUrl, stackIndex) {
+              const card = document.createElement('div');
+              card.className = 'swipe-card absolute w-full h-full rounded-3xl overflow-hidden bg-white cursor-grab';
+              card.style.zIndex = this.config.cardStackSize - stackIndex;
+              card.style.transform = `scale(${1 - stackIndex * 0.04}) translateY(${stackIndex * 6}px)`;
+              card.dataset.catUrl = catUrl;
+
+              const img = document.createElement('img');
+              img.src = catUrl;
+              img.alt = 'Adorable cat';
+              img.className = 'w-full h-full object-cover select-none';
+              img.loading = 'lazy';
+              
+              // Add loading state
+              img.onload = () => {
+                  card.style.opacity = '1';
+              };
+              
+              card.appendChild(img);
+              this.elements.container.appendChild(card);
+
+              if (stackIndex === 0) {
+                  this.addSwipeListeners(card);
+              }
+
+              return card;
+          }
+
+          // Add swipe event listeners to a card
+          addSwipeListeners(card) {
+              let startX = 0, startY = 0, currentX = 0, currentY = 0;
+              let isDragging = false;
+
+              const handleStart = (e) => {
+                  if (this.state.isAnimating) return;
+                  
+                  isDragging = true;
+                  card.classList.add('dragging');
+                  
+                  const point = e.touches ? e.touches[0] : e;
+                  startX = point.clientX;
+                  startY = point.clientY;
+              };
+
+              const handleMove = (e) => {
+                  if (!isDragging || this.state.isAnimating) return;
+                  e.preventDefault();
+                  
+                  const point = e.touches ? e.touches[0] : e;
+                  currentX = point.clientX - startX;
+                  currentY = point.clientY - startY;
+                  
+                  const rotation = currentX * 0.08;
+                  const opacity = Math.max(0.4, 1 - Math.abs(currentX) / 300);
+                  
+                  card.style.transform = `translateX(${currentX}px) translateY(${currentY}px) rotate(${rotation}deg)`;
+                  card.style.opacity = opacity;
+              };
+
+              const handleEnd = () => {
+                  if (!isDragging || this.state.isAnimating) return;
+                  
+                  isDragging = false;
+                  card.classList.remove('dragging');
+                  
+                  if (Math.abs(currentX) > this.config.swipeThreshold) {
+                      const direction = currentX > 0 ? 'right' : 'left';
+                      this.performSwipe(direction);
+                  } else {
+                      // Snap back to center
+                      card.style.transform = '';
+                      card.style.opacity = '';
+                  }
+                  
+                  currentX = 0;
+                  currentY = 0;
+              };
+
+              // Event listeners
+              card.addEventListener('touchstart', handleStart, { passive: false });
+              card.addEventListener('touchmove', handleMove, { passive: false });
+              card.addEventListener('touchend', handleEnd);
+              card.addEventListener('mousedown', handleStart);
+              
+              document.addEventListener('mousemove', handleMove);
+              document.addEventListener('mouseup', handleEnd);
+          }
+
+          // Perform swipe action
+          performSwipe(direction) {
+              if (this.state.isAnimating) return;
+              
+              this.state.isAnimating = true;
+              const topCard = this.elements.container.querySelector('.swipe-card');
+              
+              if (!topCard) {
+                  this.state.isAnimating = false;
+                  return;
+              }
+
+              const catUrl = topCard.dataset.catUrl;
+              
+              if (direction === 'right') {
+                  this.state.likedCats.push(catUrl);
+                  topCard.classList.add('swiped-right');
+              } else {
+                  this.state.dislikedCats.push(catUrl);
+                  topCard.classList.add('swiped-left');
+              }
+
+              setTimeout(() => {
+                  topCard.remove();
+                  this.state.currentIndex++;
+                  this.state.isAnimating = false;
+                  
+                  if (this.state.currentIndex >= this.state.currentCats.length) {
+                      this.showResults();
+                  } else {
+                      this.updateCardStack();
+                  }
+                  
+                  this.updateUI();
+              }, this.config.animationDuration);
+          }
+
+          // Update card stack after swipe
+          updateCardStack() {
+              const cards = this.elements.container.querySelectorAll('.swipe-card');
+              
+              // Update existing cards
+              cards.forEach((card, index) => {
+                  card.style.transform = `scale(${1 - index * 0.04}) translateY(${index * 6}px)`;
+                  card.style.zIndex = this.config.cardStackSize - index;
+                  
+                  if (index === 0) {
+                      this.addSwipeListeners(card);
+                  }
+              });
+              
+              // Add new card if available
+              const nextIndex = this.state.currentIndex + cards.length;
+              if (nextIndex < this.state.currentCats.length) {
+                  this.createCard(this.state.currentCats[nextIndex], cards.length);
+              }
+          }
+
+          // Show results screen
+          showResults() {
+              this.elements.swipeSection.classList.add('hidden');
+              this.elements.resultsSection.classList.remove('hidden');
+              this.displayLikedCats();
+          }
+
+          // Display liked cats in gallery
+          displayLikedCats() {
+              const gallery = this.elements.galleryGrid;
+              gallery.innerHTML = '';
+
+              if (this.state.likedCats.length === 0) {
+                  gallery.innerHTML = `
+                      <div class="col-span-full text-center py-8 text-white/70">
+                          <div class="text-4xl mb-2">😸</div>
+                          <p>No cats were liked this round!</p>
+                          <p class="text-sm mt-1">Try again to find your favorites</p>
+                      </div>
+                  `;
+                  return;
+              }
+
+              this.state.likedCats.forEach((catUrl, index) => {
+                  const item = document.createElement('div');
+                  item.className = 'gallery-item fade-in';
+                  item.style.animationDelay = `${index * 0.1}s`;
+                  
+                  const img = document.createElement('img');
+                  img.src = catUrl;
+                  img.alt = `Liked cat ${index + 1}`;
+                  img.className = 'w-full h-full object-cover';
+                  img.loading = 'lazy';
+                  
+                  item.appendChild(img);
+                  gallery.appendChild(item);
+              });
+          }
+
+          // Update UI counters
+          updateUI() {
+              this.elements.likeCount.textContent = this.state.likedCats.length;
+              this.elements.dislikeCount.textContent = this.state.dislikedCats.length;
+          }
+
+          // Reset application state
+          reset() {
+              this.state = {
+                  currentCats: [],
+                  currentIndex: 0,
+                  likedCats: [],
+                  dislikedCats: [],
+                  isAnimating: false
+              };
+              
+              this.elements.resultsSection.classList.add('hidden');
+              this.elements.swipeSection.classList.remove('hidden');
+              
+              this.shuffleCats();
+              this.loadCards();
+              this.updateUI();
+          }
+
+          // Bind event listeners
+          bindEvents() {
+              this.elements.likeBtn.addEventListener('click', () => this.performSwipe('right'));
+              this.elements.dislikeBtn.addEventListener('click', () => this.performSwipe('left'));
+              this.elements.startOverBtn.addEventListener('click', () => this.reset());
+              
+              this.elements.viewFavoritesBtn.addEventListener('click', () => {
+                  if (this.state.likedCats.length > 0) {
+                      // Could implement a lightbox or modal here
+                      alert(`You liked ${this.state.likedCats.length} cats! 🐱💕`);
+                  }
+              });
+
+              // Keyboard shortcuts
+              document.addEventListener('keydown', (e) => {
+                  if (this.elements.swipeSection.classList.contains('hidden')) return;
+                  
+                  switch(e.key) {
+                      case 'ArrowLeft':
+                          e.preventDefault();
+                          this.performSwipe('left');
+                          break;
+                      case 'ArrowRight':
+                          e.preventDefault();
+                          this.performSwipe('right');
+                          break;
+                  }
+              });
+          }
+      }
+
+      // Initialize application when DOM is ready
+      document.addEventListener('DOMContentLoaded', () => {
+          new CatSwipeApp();
+      });
+  </script>
+</body>
+</html>
