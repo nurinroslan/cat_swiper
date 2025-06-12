@@ -44,17 +44,74 @@
       background: #fff;
       transition: transform 0.4s, opacity 0.4s;
     }
-    .gallery-item img {
-      border-radius: 12px;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
     .glass {
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(8px);
       border-radius: 16px;
     }
+    .liked-gallery-wrapper {
+    background-color: rgba(255, 255, 255, 0.1); /* White transparent */
+    border-radius: 1rem;
+    padding: 1rem;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    overflow: hidden;
+    max-height: 250px; /* limit box height */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 0.5rem;
+    overflow-y: auto;
+    flex-grow: 1;
+  }
+
+  /* Add scroll only inside the grid */
+  .gallery-grid::-webkit-scrollbar {
+    display: none; /* Hide scrollbar on WebKit browsers */
+  }
+  .gallery-grid {
+    scrollbar-width: none; /* Hide scrollbar on Firefox */
+  }
+
+  .gallery-item {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 0.5rem;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .liked-gallery-wrapper {
+      max-height: none; /* Remove height limit on larger screens */
+    }
+
+    .gallery-grid {
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      overflow-y: visible;
+    }
+  }
+
+  .fade-in {
+    animation: fadeIn 0.4s ease-in-out both;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
   </style>
 </head>
 
