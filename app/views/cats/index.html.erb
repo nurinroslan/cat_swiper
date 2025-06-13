@@ -3,7 +3,7 @@
   <main class="container d-flex flex-column align-items-center mb-1">
     <div class="container pt-0 mt-0 text-center">
       <h1 class="mb-2 display-4 fw-bold">🐱 <span class="text-info">CatSwipe</span></h1>
-      <p class="text-white-50 mb-4">Discover your favourite cat</p>
+      <p class="text-white-50 mb-4">Find your purr-fect</p>
     </div>
     <!-- Swipe Interface -->
     <div id="swipe-section" class="w-100" style="max-width: 360px;">
@@ -11,8 +11,12 @@
         <div class="bg-secondary rounded-3 w-100 h-100"></div>
       </div>
 
+      <p class="text-white-50 text-sm text-nowrap text-center w-full">
+        Swipe right to like • Swipe left to pass
+      </p>
+
       <!-- Buttons -->
-      <div class="d-flex justify-content-center gap-4 mb-4">
+      <div class="d-flex justify-content-center gap-3 mb-3">
         <button id="dislike-btn" class="btn btn-danger rounded-circle p-3">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
@@ -20,12 +24,10 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         </button>
       </div>
-      <p class="text-white-50 text-sm text-nowrap">
-        Swipe right to like • Swipe left to pass • Find your purr-fect
-      </p>
+      
 
       <!-- Stats -->
-      <div class="glass p-3 text-center mb-4">
+      <div class="glass p-2 text-center mb-3">
         <div class="d-flex justify-content-around">
           <div>
             <div class="text-danger mb-1">💔</div>
@@ -80,24 +82,88 @@
                   animationDuration: 400
               };
 
-              // Cat image pool with high-quality Unsplash images
-              this.catImagePool = [
-                  'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400&h=500&fit=crop&q=80',
-                  'https://images.unsplash.com/photo-1513245543132-31f507417b26?w=400&h=500&fit=crop&q=80',
-                  'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400&h=500&fit=crop&q=80',
-                  'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=400&h=500&fit=crop&q=80',
-                  'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=400&h=500&fit=crop&q=80',
-                  'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=400&h=500&fit=crop&q=80',
-                  'https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?w=400&h=500&fit=crop&q=80',
-                  'https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?w=400&h=500&fit=crop&q=80',
-                  'https://images.unsplash.com/photo-1571566882372-1598d88abd90?w=400&h=500&fit=crop&q=80',
-                  'https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=400&h=500&fit=crop&q=80',
-                  'https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=400&h=500&fit=crop&q=80',
-                  'https://images.unsplash.com/photo-1561948955-570b270e7c36?w=400&h=500&fit=crop&q=80',
-                  'https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=400&h=500&fit=crop&q=80',
-                  'https://images.unsplash.com/photo-1548247416-ec66f4900b2e?w=400&h=500&fit=crop&q=80',
-                  'https://images.unsplash.com/photo-1557246565-8a3d3ab5d7f6?w=400&h=500&fit=crop&q=80',
-                  'https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=400&h=500&fit=crop&q=80',
+              // Cat data with images, names, and personalities
+              this.catData = [
+                  {
+                      image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400&h=500&fit=crop&q=80',
+                      name: 'Luna',
+                      personality: 'Mysterious and elegant, loves moonlit adventures and quiet cuddles'
+                  },
+                  {
+                      image: 'https://images.unsplash.com/photo-1513245543132-31f507417b26?w=400&h=500&fit=crop&q=80',
+                      name: 'Captain',
+                      personality: 'Grumpy yet lovable, enjoys long naps and chasing laser pointers'
+                  },
+                  {
+                      image: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400&h=500&fit=crop&q=80',
+                      name: 'Shadow',
+                      personality: 'Independent and wise, enjoys sunny windowsills and observing the world'
+                  },
+                  {
+                      image: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=400&h=500&fit=crop&q=80',
+                      name: 'Mittens',
+                      personality: 'Sweet and gentle, loves belly rubs and following you around the house'
+                  },
+                  {
+                      image: 'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=400&h=500&fit=crop&q=80',
+                      name: 'Tiger',
+                      personality: 'Bold and adventurous, enjoys exploring new places and climbing tall things'
+                  },
+                  {
+                      image: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=400&h=500&fit=crop&q=80',
+                      name: 'Oreo',
+                      personality: 'Sweet as a cookie, loves treats and cozy naps in warm, sunny spots'
+                  },
+                  {
+                      image: 'https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?w=400&h=500&fit=crop&q=80',
+                      name: 'Ginger',
+                      personality: 'Energetic and social, loves playing with toys and making new friends'
+                  },
+                  {
+                      image: 'https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?w=400&h=500&fit=crop&q=80',
+                      name: 'Smokey',
+                      personality: 'Scarredy yet affectionate, enjoys hiding in boxes and purring loudly when comfortable'
+                  },
+                  {
+                      image: 'https://images.unsplash.com/photo-1571566882372-1598d88abd90?w=400&h=500&fit=crop&q=80',
+                      name: 'Oyen',
+                      personality: 'Unpredictable and quirky, loves knocking things off shelves and surprising you with sudden pounces'
+                  },
+                  {
+                      image: 'https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=400&h=500&fit=crop&q=80',
+                      name: 'Felix',
+                      personality: 'Mischievous and clever, always finds creative ways to get what he wants'
+                  },
+                  {
+                      image: 'https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=400&h=500&fit=crop&q=80',
+                      name: 'Princess',
+                      personality: 'Regal and graceful, expects to be treated like royalty and usually gets her way'
+                  },
+                  {
+                      image: 'https://images.unsplash.com/photo-1561948955-570b270e7c36?w=400&h=500&fit=crop&q=80',
+                      name: 'Snowball',
+                      personality: 'Fluffy and affectionate, purrs loudly and loves being the center of attention'
+                  },
+                  {
+                      image: 'https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=400&h=500&fit=crop&q=80',
+                      name: 'Bandit',
+                      personality: 'Playful troublemaker with a heart of gold, loves stealing socks and hearts'
+                  },
+                  {
+                      image: 'https://images.unsplash.com/photo-1548247416-ec66f4900b2e?w=400&h=500&fit=crop&q=80',
+                      name: 'Habuk',
+                      personality: 'Cuddly and affectionate, enjoys long cuddles and gentle headbutts'
+                  },
+                  {
+                      image: 'https://images.unsplash.com/photo-1557246565-8a3d3ab5d7f6?w=400&h=500&fit=crop&q=80',
+                      name: 'Ziggy',
+                      personality: 'Energetic and unpredictable, keeps everyone entertained with silly antics'
+                  },
+                  {
+                      image: 'https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=400&h=500&fit=crop&q=80',
+                      name: 'Bella',
+                      personality: 'Beautiful inside and out, loves being pampered and giving gentle headbutts'
+                  }
               ];
 
               // Application state
@@ -136,7 +202,7 @@
 
           // Shuffle and select random cats for current session
           shuffleCats() {
-              const shuffled = [...this.catImagePool].sort(() => Math.random() - 0.5);
+              const shuffled = [...this.catData].sort(() => Math.random() - 0.5);
               this.state.currentCats = shuffled.slice(0, this.config.cardsPerSession);
               this.state.currentIndex = 0;
           }
@@ -159,18 +225,33 @@
           }
 
           // Create a single card element
-          createCard(catUrl, stackIndex) {
+          createCard(catData, stackIndex) {
               const card = document.createElement('div');
               card.className = 'swipe-card absolute w-full h-full rounded-3xl overflow-hidden bg-white cursor-grab';
               card.style.zIndex = this.config.cardStackSize - stackIndex;
               card.style.transform = `scale(${1 - stackIndex * 0.04}) translateY(${stackIndex * 6}px)`;
-              card.dataset.catUrl = catUrl;
+              card.dataset.catData = JSON.stringify(catData);
 
               const img = document.createElement('img');
-              img.src = catUrl;
-              img.alt = 'Adorable cat';
+              img.src = catData.image;
+              img.alt = `${catData.name} - ${catData.personality}`;
               img.className = 'w-full h-full object-cover select-none';
               img.loading = 'lazy';
+              
+              // Create cat info overlay
+              const catInfo = document.createElement('div');
+              catInfo.className = 'cat-info';
+              
+              const catName = document.createElement('div');
+              catName.className = 'cat-name';
+              catName.textContent = catData.name;
+              
+              const catPersonality = document.createElement('div');
+              catPersonality.className = 'cat-personality';
+              catPersonality.textContent = catData.personality;
+              
+              catInfo.appendChild(catName);
+              catInfo.appendChild(catPersonality);
               
               // Add loading state
               img.onload = () => {
@@ -178,6 +259,7 @@
               };
               
               card.appendChild(img);
+              card.appendChild(catInfo);
               this.elements.container.appendChild(card);
 
               if (stackIndex === 0) {
@@ -259,13 +341,13 @@
                   return;
               }
 
-              const catUrl = topCard.dataset.catUrl;
+              const catData = JSON.parse(topCard.dataset.catData);
               
               if (direction === 'right') {
-                  this.state.likedCats.push(catUrl);
+                  this.state.likedCats.push(catData);
                   topCard.classList.add('swiped-right');
               } else {
-                  this.state.dislikedCats.push(catUrl);
+                  this.state.dislikedCats.push(catData);
                   topCard.classList.add('swiped-left');
               }
 
@@ -328,18 +410,29 @@
                   return;
               }
 
-              this.state.likedCats.forEach((catUrl, index) => {
+              this.state.likedCats.forEach((catData, index) => {
                   const item = document.createElement('div');
                   item.className = 'gallery-item fade-in';
                   item.style.animationDelay = `${index * 0.1}s`;
                   
                   const img = document.createElement('img');
-                  img.src = catUrl;
-                  img.alt = `Liked cat ${index + 1}`;
+                  img.src = catData.image;
+                  img.alt = `${catData.name} - ${catData.personality}`;
                   img.className = 'w-full h-full object-cover';
                   img.loading = 'lazy';
                   
+                  // Create gallery cat info overlay
+                  const galleryInfo = document.createElement('div');
+                  galleryInfo.className = 'gallery-cat-info';
+                  
+                  const galleryName = document.createElement('div');
+                  galleryName.className = 'gallery-cat-name';
+                  galleryName.textContent = catData.name;
+                  
+                  galleryInfo.appendChild(galleryName);
+                  
                   item.appendChild(img);
+                  item.appendChild(galleryInfo);
                   gallery.appendChild(item);
               });
           }
@@ -374,12 +467,15 @@
               this.elements.dislikeBtn.addEventListener('click', () => this.performSwipe('left'));
               this.elements.startOverBtn.addEventListener('click', () => this.reset());
               
-              this.elements.viewFavoritesBtn.addEventListener('click', () => {
-                  if (this.state.likedCats.length > 0) {
-                      // Could implement a lightbox or modal here
-                      alert(`You liked ${this.state.likedCats.length} cats! 🐱💕`);
-                  }
-              });
+              if (this.elements.viewFavoritesBtn) {
+                  this.elements.viewFavoritesBtn.addEventListener('click', () => {
+                      if (this.state.likedCats.length > 0) {
+                          // Could implement a lightbox or modal here
+                          const catNames = this.state.likedCats.map(cat => cat.name).join(', ');
+                          alert(`You liked these cats: ${catNames}! 🐱💕`);
+                      }
+                  });
+              }
 
               // Keyboard shortcuts
               document.addEventListener('keydown', (e) => {
@@ -405,4 +501,3 @@
       });
   </script>
 </body>
-</html>
